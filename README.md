@@ -10,3 +10,11 @@ sqlite3 tasks.db
 sqlite3> .mode csv tasks
 sqlite3> .import tasks.csv tasks
 ```
+
+## To run the application, run the following commands:
+
+```
+python server.py
+```
+
+Then, go to http://localhost:5000/tasks.
