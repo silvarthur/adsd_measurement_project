@@ -1,18 +1,19 @@
-from flask import Flask
-from flask import request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request
+from flask_restful import Resource, Api
+from sqlalchemy import create_engine
+
+e = create_engine('sqlite:///tasks.db')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-db = SQLAlchemy(app)
+api = Api(app)
 
-class Record(db.Model):
-    __tablename__ = "user_record"
+class Task(Resource):
+    def get(self):
+        conn = e.connect()
+        query = conn.execute('select * from tasks')
+        return {'tasks': [i for i in query.cursor.fetchall()]}
 
-    id = db.Column('id', db.Integer, primary_key=True)
-    username = db.Column('username', db.String(20), unique=True)
-    email = db.Column('email', db.String(30), unique=True)
-    password = db.Column('password', db.Integer, unique=True)
+api.add_resource(Task, '/tasks')
 
-    def __repr__(self):
-        return 'The username of this user is: %r' % self.username
+if __name__ == '__main__':
+    app.run()
