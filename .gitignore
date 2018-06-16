@@ -1,3 +1,4 @@
 .vscode/
 robot.pyc
 server.pyc
+tasks.db
