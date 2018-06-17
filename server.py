@@ -22,7 +22,14 @@ class Task(Resource):
         query = conn.execute("insert into tasks values ('{0}', '{1}')".format(title, description))
         return {'status':'success'}
 
+#class TaskObject(Resource):
+#    def get(self, row_id):
+#        conn = e.connect()
+#        query = conn.execute('SELECT * FROM tasks WHERE rowid={0}'.format(row_id))
+#        return {'tasks': [i for i in query.cursor.fetchall()]}
+
 api.add_resource(Task, '/tasks')
+#api.add_resource(TaskObject, '/task/<string:row_id>')
 
 if __name__ == '__main__':
     app.run()
