@@ -60,7 +60,7 @@ class RobotOfRequisitions(object):
 
         total_time = time.time() - initial_time
 
-        print ('Response Time - All GET requests: {0}'.format(total_time))
+        #print ('Response Time - All GET requests: {0}'.format(total_time))
 
     # Sends a task to the dabase.
     def sendContentToTheDatabase(self):
@@ -88,7 +88,7 @@ class RobotOfRequisitions(object):
 
         self.write_data('POST', total_time, server_resp, bd_time, cpu_usage)
 
-        print ('Response Time - POST request: {0}'.format(total_time))
+        #print ('Response Time - POST request: {0}'.format(total_time))
 
         conn.close()
 
@@ -102,7 +102,7 @@ class RobotOfRequisitions(object):
 
         total_time = time.time() - initial_time
 
-        print ('Response Time - All POST requests: {0}'.format(total_time))
+        #print ('Response Time - All POST requests: {0}'.format(total_time))
 
     # Saves the data.
     def write_data(self, command, total_time, server_response, bd_response, cpu_usage):
@@ -113,6 +113,7 @@ class RobotOfRequisitions(object):
 
 if __name__ == '__main__':
     # you have to rename the files you need to save
+    '''
     myRobot = RobotOfRequisitions(http_method['GET'], output = 'data-set/teste.csv')
     myRobot.start()
     myRobot = RobotOfRequisitions(http_method['GET'], 10, output='data-set/teste2.csv')
@@ -120,4 +121,10 @@ if __name__ == '__main__':
     myRobot = RobotOfRequisitions(http_method['POST'], output='data-set/teste.csv')
     myRobot.start()
     myRobot = RobotOfRequisitions(http_method['POST'], 10, output='data-set/teste2.csv')
+    myRobot.start()
+    '''
+
+    print ("total time, server response, database response, cpu usabe e toalha de mesa")
+    
+    myRobot = RobotOfRequisitions(http_method['GET'], 100, output='data-set/get_request.csv')
     myRobot.start()

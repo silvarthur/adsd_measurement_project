@@ -16,69 +16,93 @@ class Task(Resource):
     def get(self):
         log = request.args.get('log')
 
-        server_resp_timei = time.time()
-        bd_timei = time.time()
-        conn = e.connect()
-        query = conn.execute('select * from tasks')
-        bd_timef = time.time() - bd_timei
-        tasks = [i for i in query.cursor.fetchall()]
-
         if log == 'true':
-            fd = open('log-get.csv', 'a')
-            output = csv.writer(fd, delimiter=' ', lineterminator="\n")
-            output.writerow([tasks, datetime.now()])
-            fd.close()
+            server_resp_timei = time.time()
+            bd_timei = time.time()
+            conn = e.connect()
+            query = conn.execute('select * from tasks')
+            bd_timef = time.time() - bd_timei
+            tasks = [i for i in query.cursor.fetchall()]
 
-        cpu_usage = psutil.cpu_percent(interval=0.1)
+            '''
+            if log == 'true':
+                fd = open('log-get.csv', 'a')
+                output = csv.writer(fd, delimiter=' ', lineterminator="\n")
+                output.writerow([tasks, datetime.now()])
+                fd.close()
+            '''
 
-        pid = os.getpid()
-        py = psutil.Process(pid)
-        memory_usage = py.memory_info()[0] / 2. ** 30  # memoria usada em GB
+            cpu_usage = psutil.cpu_percent(interval=0.1)
 
-        server_resp_timef = time.time() - server_resp_timei
+            pid = os.getpid()
+            py = psutil.Process(pid)
+            memory_usage = py.memory_info()[0] / 2. ** 30  # memoria usada em GB
 
-        return {
-            'tasks': tasks,
-            'server_resp': server_resp_timef,
-            'bd_time': bd_timef,
-            'cpu_usage': cpu_usage,
-            'memory_usage': memory_usage
-        }
+            server_resp_timef = time.time() - server_resp_timei
+
+            if log == 'true':
+                fd = open('log-get.csv', 'a')
+                output = csv.writer(fd, delimiter=',', quotechar='|')
+                output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
+                fd.close()
+
+            return {
+                'tasks': tasks,
+                'server_resp': server_resp_timef,
+                'bd_time': bd_timef,
+                'cpu_usage': cpu_usage,
+                'memory_usage': memory_usage
+            }
+        else:
+            conn = e.connect()
+            query = conn.execute('select * from tasks')
+            tasks = [i for i in query.cursor.fetchall()]
+
+            return { 'tasks': tasks }
 
     def post(self):
         log = request.args.get('log')
-        server_resp_timei = time.time()
-
-        bd_timei = time.time()
-        conn = e.connect()
-        title = request.json['title']
-        description = request.json['description']
-        query = conn.execute("insert into tasks values ('{0}', '{1}')".format(title, description))
-        bd_timef = time.time() - bd_timei
 
         if log == 'true':
-            fd = open('log-post.csv', 'a')
-            output = csv.writer(fd, delimiter=' ', lineterminator="\n")
-            output.writerow([(title, description), datetime.now()])
-            fd.close()
+            log = request.args.get('log')
+            server_resp_timei = time.time()
 
-        cpu_usage = psutil.cpu_percent(interval=0.1)
+            bd_timei = time.time()
+            conn = e.connect()
+            title = request.json['title']
+            description = request.json['description']
+            query = conn.execute("insert into tasks values ('{0}', '{1}')".format(title, description))
+            bd_timef = time.time() - bd_timei
 
-        pid = os.getpid()
-        py = psutil.Process(pid)
-        memory_usage = py.memory_info()[0] / 2. ** 30  # memoria usada em GB
+            cpu_usage = psutil.cpu_percent(interval=0.1)
 
-        server_resp_timef = time.time() - server_resp_timei
+            pid = os.getpid()
+            py = psutil.Process(pid)
+            memory_usage = py.memory_info()[0] / 2. ** 30  # memoria usada em GB
 
-        return {
-            'task': {'title': title, 'description': description},
-            'status':'success',
-            'server_resp': server_resp_timef,
-            'bd_time': bd_timef,
-            'cpu_usage': cpu_usage,
-            'memory_usage': memory_usage
-        }
+            server_resp_timef = time.time() - server_resp_timei
 
+            if log == 'true':
+                fd = open('log-post.csv', 'a')
+                output = csv.writer(fd, delimiter=',', quotechar='|')
+                output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
+                fd.close()
+
+            return {
+                'task': {'title': title, 'description': description},
+                'status':'success',
+                'server_resp': server_resp_timef,
+                'bd_time': bd_timef,
+                'cpu_usage': cpu_usage,
+                'memory_usage': memory_usage
+            }
+        else:
+            conn = e.connect()
+            title = request.json['title']
+            description = request.json['description']
+            query = conn.execute("insert into tasks values ('{0}', '{1}')".format(title, description))
+
+            return { 'status':'success' }
 
 api.add_resource(Task, '/tasks')
 if __name__ == '__main__':
