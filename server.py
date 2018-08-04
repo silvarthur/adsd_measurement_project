@@ -37,6 +37,11 @@ class Task(Resource):
 
         server_resp_timef = time.time() - server_resp_timei
 
+        fd = open('metricas-get.csv', 'a')
+        output = csv.writer(fd, delimiter=' ', lineterminator="\n")
+        output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
+        fd.close()
+
         return {
             'tasks': tasks,
             'server_resp': server_resp_timef,
@@ -69,6 +74,11 @@ class Task(Resource):
         memory_usage = py.memory_info()[0] / 2. ** 30  # memoria usada em GB
 
         server_resp_timef = time.time() - server_resp_timei
+
+        fd = open('metricas-post.csv', 'a')
+        output = csv.writer(fd, delimiter=' ', lineterminator="\n")
+        output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
+        fd.close()
 
         return {
             'task': {'title': title, 'description': description},
