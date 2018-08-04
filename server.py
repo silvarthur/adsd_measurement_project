@@ -38,7 +38,7 @@ class Task(Resource):
         server_resp_timef = time.time() - server_resp_timei
 
         fd = open('metricas-get.csv', 'a')
-        output = csv.writer(fd, delimiter=' ', lineterminator="\n")
+        output = csv.writer(fd, delimiter=',', quotechar="|")
         output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
         fd.close()
 
@@ -76,7 +76,7 @@ class Task(Resource):
         server_resp_timef = time.time() - server_resp_timei
 
         fd = open('metricas-post.csv', 'a')
-        output = csv.writer(fd, delimiter=' ', lineterminator="\n")
+        output = csv.writer(fd, delimiter=',', quotechar="|")
         output.writerow([server_resp_timef, bd_timef, cpu_usage, memory_usage])
         fd.close()
 
