@@ -1,4 +1,4 @@
-Rótulo,# Amostras,Média,Mín.,Máx.,Desvio Padrão,% de Erro,Vazão,KB/s,Sent KB/sec,Média de Bytes
-GET Request,100,2418,252,3439,"737,70","0,000%","4,11794","8,63","0,66","2145,6"
-POST Request,100,2794,2120,3526,"387,08","0,000%","3,64339","1,29","0,90","363,6"
-TOTAL,200,2606,252,3526,"618,34","0,000%","7,21085","8,83","1,48","1254,6"
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+GET Request,100,1971,140,2235,495.70,0.000%,5.09502,10.75,0.82,2160.2
+POST Request,100,2182,2141,2239,23.29,0.000%,4.60723,1.65,1.14,367.5
+TOTAL,200,2077,140,2239,366.31,0.000%,9.15499,11.30,1.87,1263.9
